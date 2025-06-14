@@ -46,7 +46,7 @@ An interactive web application that visualizes sorting algorithms in real-time. 
 ```
 
 ---
-**Created by Aryaman Agarwal**
+**Created by ME😁**
 
 
 
