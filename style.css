@@ -1,3 +1,11 @@
+/**
+ * Sorting Visualizer Styles
+ * Author: Aryaman Agarwal
+ * 
+ * Responsive CSS design for the sorting algorithm visualizer
+ * with modern styling and mobile-first approach.
+ */
+
 * {
     margin: 0;
     padding: 0;
@@ -51,6 +59,7 @@ nav {
     border-radius: 3px;
     outline: none;
     -webkit-appearance: none;
+    appearance: none;
 }
 
 .input-group input[type="range"]::-webkit-slider-thumb {
@@ -184,7 +193,7 @@ main {
     font-size: 1.4rem;
     margin-bottom: 1rem;
     text-align: center;
-    color: #FFD700;
+    color: #f2da51;
     text-decoration: underline;
 }
 
@@ -225,15 +234,19 @@ main {
     border: 1px solid #000000;
     min-height: 400px;
     position: relative;
+    width: 100%;
+    overflow-x: auto;
 }
 
 .array-bar {
-    background: #3498db;
-    margin: 0 2px;
+    background: #0e8ee3;
+    margin: 0 1px;
     border-radius: 0;
     transition: none;
     position: relative;
     border: none;
+    min-width: 2px;
+    flex-shrink: 0;
 }
 
 /* Animation States */
@@ -283,6 +296,12 @@ footer {
     .array-container {
         order: 1;
         min-height: 300px;
+        padding: 0.5rem;
+    }
+    
+    .array-bar {
+        margin: 0 0.5px;
+        min-width: 1px;
     }
 }
 
@@ -307,19 +326,69 @@ footer {
     main {
         padding: 1rem;
     }
+    
+    .array-container {
+        min-height: 250px;
+        padding: 0.25rem;
+    }
+    
+    .array-bar {
+        margin: 0 0.25px;
+        min-width: 1px;
+    }
 }
 
-@media (max-width: 480px) {
-    .algorithms {
-        grid-template-columns: 1fr;
+/* Extra small devices */
+@media (max-width: 320px) {
+    .nav-heading {
+        font-size: 1.2rem;
     }
     
-    .input-group {
-        flex-direction: column;
-        text-align: center;
+    .array-container {
+        min-height: 150px;
+        padding: 0.1rem;
     }
     
-    .input-group label {
-        min-width: auto;
+    .complexity-info {
+        padding: 0.75rem;
+    }
+    
+    .complexity-info h3 {
+        font-size: 1rem;
+    }
+    
+    .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+    
+    .algo-btn {
+        padding: 0.5rem;
+        font-size: 0.8rem;
+    }
+}
+
+/* Ensure bars are always visible */
+.array-bar {
+    max-width: 50px;
+    min-width: 1px;
+}
+
+/* Container constraints */
+.array-container {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Prevent horizontal scroll on small screens */
+@media (max-width: 768px) {
+    .content {
+        padding: 0;
+        margin: 0;
+    }
+    
+    .array-container {
+        margin: 0 auto;
+        max-width: calc(100vw - 2rem);
     }
 }

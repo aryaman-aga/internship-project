@@ -1,4 +1,10 @@
-// Visualization utilities and enhancements
+/**
+ * Visualization Utilities and Enhancements
+ * Author: Aryaman Agarwal
+ * 
+ * Provides visual effects, responsive behavior, and
+ * performance optimizations for the sorting visualizer.
+ */
 
 // Enhanced visualization effects
 SortingVisualizer.prototype.createRippleEffect = function(index) {
@@ -199,11 +205,11 @@ SortingVisualizer.prototype.adjustArraySizeForScreen = function() {
     let maxSize;
     
     if (screenWidth < 480) {
-        maxSize = 50;
+        maxSize = 40;
     } else if (screenWidth < 768) {
-        maxSize = 80;
+        maxSize = 60;
     } else if (screenWidth < 1200) {
-        maxSize = 120;
+        maxSize = 100;
     } else {
         maxSize = 150;
     }
@@ -219,11 +225,32 @@ SortingVisualizer.prototype.adjustArraySizeForScreen = function() {
     }
 };
 
-// Initialize responsive behavior
-window.addEventListener('resize', () => {
+// Enhanced responsive behavior
+SortingVisualizer.prototype.handleResize = function() {
+    if (!this.isAnimating) {
+        this.adjustArraySizeForScreen();
+        // Re-render array with new dimensions
+        setTimeout(() => {
+            this.renderArray();
+        }, 100);
+    }
+};
+
+// Initialize responsive behavior with debouncing
+const debouncedResize = () => {
     if (visualizer && !visualizer.isAnimating) {
-        visualizer.adjustArraySizeForScreen();
-        setTimeout(() => visualizer.renderArray(), 100);
+        visualizer.handleResize();
+    }
+};
+
+window.addEventListener('resize', visualizer ? visualizer.debounceResize(debouncedResize, 300) : debouncedResize);
+
+// Also handle orientation change on mobile devices
+window.addEventListener('orientationchange', () => {
+    if (visualizer && !visualizer.isAnimating) {
+        setTimeout(() => {
+            visualizer.handleResize();
+        }, 500); // Longer delay for orientation change
     }
 });
 

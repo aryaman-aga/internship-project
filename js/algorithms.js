@@ -1,4 +1,11 @@
-// Sorting Algorithms Implementation
+/**
+ * Sorting Algorithms Implementation
+ * Author: Aryaman Agarwal
+ * 
+ * Contains implementations of 6 sorting algorithms with
+ * visual animation support and step-by-step visualization.
+ */
+
 // All methods are added to the SortingVisualizer prototype
 
 // Bubble Sort

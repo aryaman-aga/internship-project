@@ -1,3 +1,13 @@
+/**
+ * Sorting Visualizer - Interactive Algorithm Visualization
+ * 
+ * Author: Aryaman Agarwal
+ * 
+ * A comprehensive sorting algorithm visualizer with responsive design
+ * and interactive controls. Supports 6 different sorting algorithms
+ * with real-time visualization and performance tracking.
+ */
+
 // Main application controller
 class SortingVisualizer {
     constructor() {
@@ -50,6 +60,16 @@ class SortingVisualizer {
 
     init() {
         this.setupEventListeners();
+        this.adjustArraySizeForScreen(); // Set appropriate size for current screen
+        
+        // Set optimal initial array size
+        const optimalSize = this.getOptimalArraySize();
+        if (optimalSize !== this.arraySize) {
+            this.arraySize = optimalSize;
+            document.getElementById('arraySize').value = optimalSize;
+            document.getElementById('arraySizeValue').textContent = optimalSize;
+        }
+        
         this.generateArray();
         this.updateSpeedDisplay();
     }
@@ -90,6 +110,11 @@ class SortingVisualizer {
                 }
             });
         });
+
+        // Window resize event
+        window.addEventListener('resize', this.debounceResize(() => {
+            this.adjustArraySizeForScreen();
+        }, 250));
     }
 
     generateArray() {
@@ -99,7 +124,7 @@ class SortingVisualizer {
 
         // Generate random array
         for (let i = 0; i < this.arraySize; i++) {
-            const value = Math.floor(Math.random() * 350) + 10;
+            const value = this.generateResponsiveValues();
             this.array.push(value);
         }
 
@@ -113,18 +138,29 @@ class SortingVisualizer {
         const container = document.getElementById('arrayContainer');
         container.innerHTML = '';
 
-        const containerWidth = container.offsetWidth - 40; // Account for padding
-        const barWidth = Math.max(2, (containerWidth / this.arraySize) - 2);
+        // Wait for container to be properly sized
+        setTimeout(() => {
+            const containerWidth = container.offsetWidth - 32; // Account for padding
+            const margin = window.innerWidth < 768 ? 0.5 : 1; // Responsive margin
+            const totalMarginSpace = this.arraySize * (margin * 2);
+            const availableWidth = containerWidth - totalMarginSpace;
+            const barWidth = Math.max(1, Math.floor(availableWidth / this.arraySize));
+            
+            // Ensure bars don't exceed container
+            const maxBarWidth = Math.min(barWidth, 50);
 
-        this.array.forEach((value, index) => {
-            const bar = document.createElement('div');
-            bar.className = 'array-bar';
-            bar.style.height = `${value}px`;
-            bar.style.width = `${barWidth}px`;
-            bar.dataset.index = index;
-            bar.dataset.value = value;
-            container.appendChild(bar);
-        });
+            this.array.forEach((value, index) => {
+                const bar = document.createElement('div');
+                bar.className = 'array-bar';
+                bar.style.height = `${value}px`;
+                bar.style.width = `${maxBarWidth}px`;
+                bar.style.marginLeft = `${margin}px`;
+                bar.style.marginRight = `${margin}px`;
+                bar.dataset.index = index;
+                bar.dataset.value = value;
+                container.appendChild(bar);
+            });
+        }, 10);
     }
 
     updateSpeedDisplay() {
@@ -301,6 +337,66 @@ class SortingVisualizer {
         document.querySelectorAll('.array-bar').forEach(bar => {
             bar.classList.remove('comparing', 'swapping', 'pivot');
         });
+    }
+
+    // Generate responsive array values based on screen size
+    generateResponsiveValues() {
+        const container = document.getElementById('arrayContainer');
+        const containerHeight = container.offsetHeight || 400; // Fallback height
+        
+        // Responsive height calculation based on screen size
+        let maxHeight, minHeight;
+        
+        if (window.innerWidth < 480) {
+            maxHeight = Math.min(150, containerHeight * 0.7);
+            minHeight = 15;
+        } else if (window.innerWidth < 768) {
+            maxHeight = Math.min(200, containerHeight * 0.75);
+            minHeight = 20;
+        } else {
+            maxHeight = Math.min(350, containerHeight * 0.8);
+            minHeight = 25;
+        }
+        
+        return Math.floor(Math.random() * (maxHeight - minHeight)) + minHeight;
+    }
+
+    // Auto-adjust array size for optimal performance on current device
+    getOptimalArraySize() {
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+        const devicePixelRatio = window.devicePixelRatio || 1;
+        
+        // Calculate optimal size based on screen dimensions and pixel density
+        let optimalSize;
+        
+        if (screenWidth < 320) {
+            optimalSize = 25;
+        } else if (screenWidth < 480) {
+            optimalSize = Math.min(40, Math.floor(screenWidth / 8));
+        } else if (screenWidth < 768) {
+            optimalSize = Math.min(60, Math.floor(screenWidth / 10));
+        } else if (screenWidth < 1200) {
+            optimalSize = Math.min(100, Math.floor(screenWidth / 12));
+        } else {
+            optimalSize = Math.min(150, Math.floor(screenWidth / 15));
+        }
+        
+        // Adjust for high DPI screens
+        if (devicePixelRatio > 1.5) {
+            optimalSize = Math.floor(optimalSize * 0.8);
+        }
+        
+        return Math.max(20, optimalSize);
+    }
+
+    // Debounced resize handler for better performance
+    debounceResize(func, delay) {
+        let timeoutId;
+        return (...args) => {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => func.apply(this, args), delay);
+        };
     }
 }
 
