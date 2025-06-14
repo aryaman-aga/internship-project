@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorting Visualizer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="array-inputs">
+                <div class="input-group">
+                    <label for="arraySize">Array Size:</label>
+                    <input id="arraySize" type="range" min="20" max="150" step="1" value="80">
+                    <span id="arraySizeValue">80</span>
+                </div>
+                <div class="input-group">
+                    <label for="speed">Speed:</label>
+                    <input id="speed" type="range" min="1" max="5" step="1" value="3">
+                    <span id="speedValue">3</span>
+                </div>
+                <button id="generateArray" class="btn btn-primary">Generate New Array</button>
+            </div>
+
+            <div class="header-right">
+                <h1 class="nav-heading">Sorting Visualizer</h1>
+                <div class="algorithms">
+                    <button class="algo-btn" data-algo="bubble">Bubble Sort</button>
+                    <button class="algo-btn" data-algo="selection">Selection Sort</button>
+                    <button class="algo-btn" data-algo="insertion">Insertion Sort</button>
+                    <button class="algo-btn" data-algo="merge">Merge Sort</button>
+                    <button class="algo-btn" data-algo="quick">Quick Sort</button>
+                    <button class="algo-btn" data-algo="heap">Heap Sort</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="content">
+            <div class="complexity-info">
+                <h3>Time Complexity</h3>
+                <div class="complexity-container">
+                    <div class="complexity-item">
+                        <span class="complexity-label">Worst case:</span>
+                        <span id="timeWorst">-</span>
+                    </div>
+                    <div class="complexity-item">
+                        <span class="complexity-label">Average case:</span>
+                        <span id="timeAverage">-</span>
+                    </div>
+                    <div class="complexity-item">
+                        <span class="complexity-label">Best case:</span>
+                        <span id="timeBest">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="arrayContainer" class="array-container">
+                <!-- Array bars will be generated here -->
+            </div>
+
+            <div class="complexity-info">
+                <h3>Space Complexity</h3>
+                <div class="complexity-container">
+                    <div class="complexity-item">
+                        <span class="complexity-label">Worst case:</span>
+                        <span id="spaceWorst">-</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="algorithm-status">
+            <p id="statusText">Select an algorithm to start sorting</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/algorithms.js"></script>
+    <script src="js/visualizer.js"></script>
+</body>
+</html>
